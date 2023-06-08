@@ -1,0 +1,22 @@
+{
+  "name": "primer_entrega_final_giuliani_federico_backend_43355",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/Server/server.js",
+    "dev": "nodemon ./src/Server/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "node": "^18.7.0",
+    "nodemon": "^2.0.19",
+    "routes": "^2.1.0",
+    "socket.io": "^4.5.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": ""
+}
