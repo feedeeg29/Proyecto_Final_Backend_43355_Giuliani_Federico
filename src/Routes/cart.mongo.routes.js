@@ -7,7 +7,7 @@ const manager = new cartManager();
 
 cartMongoRoutes.get('/', async (req, res) => {
     try {
-        const carts = await manager.getAllCarts()
+        const carts = await manager.getAllCarts(req, res, req.query)
         console.log(...carts)
         res.json({ status: 200, data: carts })
     }

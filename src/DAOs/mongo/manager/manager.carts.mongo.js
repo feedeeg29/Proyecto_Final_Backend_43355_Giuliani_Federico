@@ -6,13 +6,17 @@ class cartManager {
         try {
             const options = {
                 page: req.query.page || 1,
-                limit: req.query.limit || 10,
+                limit: req.query.limit || 1,
                 lean: true
             };
 
             const datosCart = await cartModel.paginate({}, options);
             const carts = datosCart.docs;
-            return carts;
+            const hasPrevPage = datosCart.hasPrevPage;
+            const hasNextPage = datosCart.hasNextPage;
+            const prevPage = datosCart.prevPage;
+            const nextPage = datosCart.nextPage;
+            return { carts, hasNextPage, hasPrevPage, nextPage, prevPage };
         } catch (err) {
             throw new Error(err);
         }
@@ -38,7 +42,6 @@ class cartManager {
     addToCart = async (cartId, productId) => {
         try {
             const cart = await cartModel.findById(cartId);
-            console.log
 
             const existingItem = cart.items.find(item => item.productId.toString() === productId);
             if (existingItem) {

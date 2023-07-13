@@ -13,8 +13,8 @@ viewsRoutes.get('/', (req, res) => {
 });
 //rutas cart
 viewsRoutes.get('/carts', async (req, res) => {
-    const carts = await cManager.getAllCarts();
-    res.render('carts', { carts });
+    const { carts, hasNextPage, hasPrevPage, nextPage, prevPage } = await cManager.getAllCarts(req, res, req.query);
+    res.render('carts', { carts, hasNextPage, hasPrevPage, nextPage, prevPage });
 });
 
 viewsRoutes.get('/cart', async (req, res) => {
