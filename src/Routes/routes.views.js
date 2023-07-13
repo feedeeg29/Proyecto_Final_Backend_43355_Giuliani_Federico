@@ -17,6 +17,10 @@ viewsRoutes.get('/carts', async (req, res) => {
     res.render('carts', { carts });
 });
 
+viewsRoutes.get('/cart', async (req, res) => {
+    const cart = await cManager.getOneCart(req.params.id);
+    res.render('cart', { cart });
+});
 
 //rutas products
 viewsRoutes.get('/products', async (req, res) => {
@@ -34,10 +38,6 @@ viewsRoutes.get('/addproducts', (req, res) => {
     res.render('addProduct');
 });
 
-viewsRoutes.get('/cart', async (req, res) => {
-    const cart = await cManager.getOneCart(req.params.id);
-    res.render('cart', { cart });
-});
 
 
 export default viewsRoutes

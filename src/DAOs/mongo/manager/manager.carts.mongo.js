@@ -2,9 +2,17 @@ import cartModel from "../models/model.carts.mongo.js";
 import productModel from "../models/model.products.mongo.js";
 
 class cartManager {
-    getAllCarts = async () => {
+    getAllCarts = async (req, res, query) => {
         try {
-            return await cartModel.find().populate('items.productId').lean();
+            const options = {
+                page: req.query.page || 1,
+                limit: req.query.limit || 10,
+                lean: true
+            };
+
+            const datosCart = await cartModel.paginate({}, options);
+            const carts = datosCart.docs;
+            return carts;
         } catch (err) {
             throw new Error(err);
         }
@@ -62,6 +70,13 @@ class cartManager {
             }
         } catch (error) {
             console.error('Error al remover producto del carrito:', error);
+        }
+    }
+    updateCart = async (id, cart) => {
+        try {
+            return await cartModel.findByIdAndUpdate(id, cart, { new: true });
+        } catch (err) {
+            throw new Error(err);
         }
     }
 

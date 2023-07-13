@@ -8,3 +8,14 @@
     <ul>Mongoose</ul>
     <ul>Nodemon</ul>
     </li>
+
+<p> Endpoints Frontend:</p>
+    <p>Vista Home</p>
+<ul>localhost:8080</ul>
+    <p> Vista Products</p>
+        <ul>localhost:8080/products</ul>
+    <p>Vista Carts</p>
+<ul>localhost:8080/carts</ul>
+
+<p>Endpoints Server-only</p>
+    <p>Traer</p>

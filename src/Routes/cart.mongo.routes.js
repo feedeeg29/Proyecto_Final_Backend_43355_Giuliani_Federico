@@ -1,10 +1,9 @@
 import { Router } from 'express';
 import cartManager from '../DAOs/mongo/manager/manager.carts.mongo.js';
-import productManager from '../DAOs/mongo/manager/manager.products.mongo.js';
+
 
 const cartMongoRoutes = Router();
 const manager = new cartManager();
-const pManager = new productManager();
 
 cartMongoRoutes.get('/', async (req, res) => {
     try {
@@ -39,7 +38,7 @@ cartMongoRoutes.post('/', async (req, res) => {
 cartMongoRoutes.post('/:id/product/:productId', async (req, res) => {
     try {
         const cart = await manager.addToCart(req.params.id, req.params.productId)
-        console.log(cart)
+
         res.json({ status: 200, data: cart })
     }
     catch (err) {
