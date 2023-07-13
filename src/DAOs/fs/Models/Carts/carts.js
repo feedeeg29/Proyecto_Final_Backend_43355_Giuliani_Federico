@@ -1,5 +1,6 @@
-const fs = require('fs');
-const Contenedor = require('../Container/container');
+import fs from 'fs';
+import Contenedor from '../../Manager/Container/container.js';
+
 
 let contenedor = new Contenedor('./public/carts.json');
 
@@ -99,4 +100,5 @@ async function deleteCart(id) {
   }
 }
 
-module.exports = { createCart, getCart, getAllCarts, updateCart, deleteCart, addToCart, deleteFromCart };
+const carts = { createCart, getCart, getAllCarts, updateCart, deleteCart, addToCart, deleteFromCart };
+export default carts;

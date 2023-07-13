@@ -1,5 +1,6 @@
-const products = require("../Products/products");
-const cart = require("../Carts/carts");
+import products from "../../Models/Products/products.js";
+import carts from "../../Models/Carts/carts.js";
+
 
 class Actions {
   // Product methods
@@ -21,11 +22,11 @@ class Actions {
   }
   // Cart methods
   static createCart(prods) {
-    return cart.createCart(prods).id;
+    return carts.createCart(prods).id;
   }
 
   static deleteCart(id) {
-    return cart.deleteCart(id);
+    return carts.deleteCart(id);
   }
 
   static async getCartProducts(id) {
@@ -38,13 +39,13 @@ class Actions {
   static async addToCart(id, productId) {
     const product = await this.getOne(productId);
     console.log(product);
-    return cart.addToCart(id, product);
+    return carts.addToCart(id, product);
   }
 
   static deleteFromCart(id, productId) {
-    return cart.deleteFromCart(id, productId);
+    return carts.deleteFromCart(id, productId);
   }
 }
 
-module.exports = Actions;
+export default Actions;
 

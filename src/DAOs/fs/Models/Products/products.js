@@ -1,6 +1,6 @@
+import fs from 'fs';
+import Contenedor from '../../Manager/Container/container.js';
 
-const fs = require('fs')
-const Contenedor = require('../Container/container')
 
 let contenedor = new Contenedor('./public/products.json');
 
@@ -60,5 +60,5 @@ async function deleteProduct(id) {
         return 'Producto no encontrado'
     }
 }
-
-module.exports = { getAllProducts, getProduct, addProduct, updateProduct, deleteProduct }
+const products = { getAllProducts, getProduct, addProduct, updateProduct, deleteProduct }
+export default products
