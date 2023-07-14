@@ -7,7 +7,7 @@ const manager = new productManager();
 
 mnrouter.get('/all', async (req, res) => {
     try {
-        const products = await manager.getAll()
+        const products = await manager.getAll(req, res, req.query)
         console.log(products)
         res.json({ status: 200, data: products })
     }

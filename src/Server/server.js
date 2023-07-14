@@ -25,7 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.engine("handlebars", handlebars.engine({ defaultLayout: 'home', extname: '.handlebars' }))
 app.use(express.static(`${__dirname}/public`))
-//app.use(express.static(`src/public/`))
 app.set("view engine", "handlebars")
 app.set('views', path.join(__dirname, '..', 'views'));
 

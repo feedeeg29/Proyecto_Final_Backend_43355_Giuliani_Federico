@@ -1,12 +1,12 @@
 import cartModel from "../models/model.carts.mongo.js";
-import productModel from "../models/model.products.mongo.js";
+
 
 class cartManager {
     getAllCarts = async (req, res, query) => {
         try {
             const options = {
                 page: req.query.page || 1,
-                limit: req.query.limit || 1,
+                limit: req.query.limit || 10,
                 lean: true
             };
 

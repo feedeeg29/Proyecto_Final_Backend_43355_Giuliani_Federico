@@ -2,9 +2,21 @@ import productModel from "../../mongo/models/model.products.mongo.js";
 
 
 class productManager {
-    getAll = async () => {
+    getAll = async (req, res, query) => {
         try {
-            return await productModel.find().lean();
+            const options = {
+                page: req.query.page || 1,
+                limit: req.query.limit || 1,
+                lean: true
+            };
+            const datosProducts = await productModel.paginate({}, options);
+            const products = datosProducts.docs;
+            const hasPrevPage = datosProducts.hasPrevPage;
+            const hasNextPage = datosProducts.hasNextPage;
+            const prevPage = datosProducts.prevPage;
+            const nextPage = datosProducts.nextPage;
+            return { products, hasNextPage, hasPrevPage, nextPage, prevPage };
+
         } catch (err) {
             throw new Error(err);
         }

@@ -24,8 +24,8 @@ viewsRoutes.get('/cart', async (req, res) => {
 
 //rutas products
 viewsRoutes.get('/products', async (req, res) => {
-    const products = await manager.getAll();
-    res.render('products', { products });
+    const { products, hasNextPage, hasPrevPage, nextPage, prevPage } = await manager.getAll(req, res, req.query);
+    res.render('products', { products, hasNextPage, hasPrevPage, nextPage, prevPage });
 });
 
 viewsRoutes.get('/product/:id', async (req, res) => {
