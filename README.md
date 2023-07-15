@@ -29,4 +29,4 @@
     <h2>(PUT)Actualizar un carrito</h2>
     <p>localhost:8080/cartmongo/:id</p>
     <h2>Eliminar un carrito</h2>
-    <p><b>(DELETE)</b>localhost:8080/cartmongo/:id</p>
+    <p><b style="color:red">(DELETE)</b>localhost:8080/cartmongo/:id</p>
