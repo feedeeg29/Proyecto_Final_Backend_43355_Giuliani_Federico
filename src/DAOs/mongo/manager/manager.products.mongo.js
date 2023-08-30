@@ -2,11 +2,11 @@ import productModel from "../../mongo/models/model.products.mongo.js";
 
 
 class productManager {
-    getAll = async (req, res, query) => {
+    static getAll = async (req, res, query) => {
         try {
             const options = {
                 page: req.query.page || 1,
-                limit: req.query.limit || 1,
+                limit: req.query.limit || 10,
                 lean: true
             };
             const datosProducts = await productModel.paginate({}, options);
@@ -21,14 +21,14 @@ class productManager {
             throw new Error(err);
         }
     }
-    getOne = async (id) => {
+    static getOne = async (id) => {
         try {
             return await productModel.findById(id).lean();
         } catch (err) {
             throw new Error(err);
         }
     }
-    createProduct = async (product) => {
+    static createProduct = async (product) => {
         try {
             const newProduct = new productModel(product);
             return await newProduct.save();
@@ -36,7 +36,7 @@ class productManager {
             throw new Error(err);
         }
     }
-    updateProduct = async (id, newContent) => {
+    static updateProduct = async (id, newContent) => {
         try {
             return await productModel.findByIdAndUpdate(id, newContent, { new: true });
         }
@@ -44,7 +44,7 @@ class productManager {
             throw new Error(err);
         }
     }
-    deleteProduct = async (id) => {
+    static deleteProduct = async (id) => {
         try {
             return await productModel.findByIdAndDelete(id);
         }

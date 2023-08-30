@@ -2,7 +2,7 @@ import cartModel from "../models/model.carts.mongo.js";
 
 
 class cartManager {
-    getAllCarts = async (req, res, query) => {
+    static getAllCarts = async (req, res, query) => {
         try {
             const options = {
                 page: req.query.page || 1,
@@ -21,14 +21,14 @@ class cartManager {
             throw new Error(err);
         }
     }
-    getOneCart = async (id) => {
+    static getOneCart = async (id) => {
         try {
             return await cartModel.findById(id).populate('items.productId').lean();
         } catch (err) {
             throw new Error(err);
         }
     }
-    createCart = async (cart) => {
+    static createCart = async (cart) => {
         try {
             const newCart = new cartModel(cart);
             return await newCart.save();
@@ -39,7 +39,7 @@ class cartManager {
     // Función para agregar un producto al carrito
 
 
-    addToCart = async (cartId, productId) => {
+    static addToCart = async (cartId, productId) => {
         try {
             const cart = await cartModel.findById(cartId);
 
@@ -58,7 +58,7 @@ class cartManager {
     }
 
     // Función para remover un producto del carrito
-    removeFromCart = async (cartId, productId) => {
+    static removeFromCart = async (cartId, productId) => {
         try {
             const cart = await cartModel.findById(cartId);
             const itemIndex = cart.items.findIndex(item => item.productId.toString() === productId);
@@ -75,7 +75,7 @@ class cartManager {
             console.error('Error al remover producto del carrito:', error);
         }
     }
-    updateCart = async (id, cart) => {
+    static updateCart = async (id, cart) => {
         try {
             return await cartModel.findByIdAndUpdate(id, cart, { new: true });
         } catch (err) {
@@ -84,7 +84,7 @@ class cartManager {
     }
 
     // Función para vaciar el carrito
-    clearCart = async (cartId) => {
+    static clearCart = async (cartId) => {
         try {
 
             const cart = await cartModel.findById(cartId);
@@ -96,7 +96,7 @@ class cartManager {
             console.error('Error al vaciar el carrito:', error);
         }
     }
-    deleteCart = async (id) => {
+    static deleteCart = async (id) => {
         try {
             return await cartModel.findByIdAndDelete(id);
         } catch (err) {
