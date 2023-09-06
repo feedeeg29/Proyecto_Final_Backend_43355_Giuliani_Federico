@@ -1,6 +1,6 @@
-import ProductManager from '../DAOs/mongo/manager/manager.products.mongo.js';
-import CartManager from '../DAOs/mongo/manager/manager.carts.mongo.js';
-import UserManager from '../DAOs/mongo/manager/manager.user.mongo.js';
+import ProductManager from '../DAOs/mongo/manager/products/manager.products.mongo.js';
+import CartManager from '../DAOs/mongo/manager/carts/manager.carts.mongo.js';
+import UserManager from '../DAOs/mongo/manager/users/manager.user.mongo.js';
 import passport from "passport";
 import { createHash, isValidPassword } from "../utils/utils.js"
 
@@ -8,12 +8,14 @@ class ActionsMongo {
     // Métodos de productos
     static async getAll(req, res) {
         try {
-            const { products, hasNextPage, hasPrevPage, nextPage, prevPage } = await ProductManager.getAll(req, res, req.query);
-            res.render('products', { products, hasNextPage, hasPrevPage, nextPage, prevPage });
+            const data = await ProductManager.getAll(req, req.query);
+            console.log("aca llegamos")
+            return data
         } catch (err) {
-            res.json({ status: 500, err: err.message });
+            res.status(500)({ status: 500, err: err.message });
         }
     }
+
 
     static async getOne(req, res) {
         try {
@@ -21,6 +23,15 @@ class ActionsMongo {
             res.render('product', { product });
         } catch (err) {
             res.json({ status: 500, err: err.message });
+        }
+    }
+
+    static async createProduct(req, res) {
+        try {
+            const newProduct = await ProductManager.createProduct(req.body); // Usar req.body en lugar de product
+            res.status(201).json({ status: 'success', message: 'Producto creado con éxito', data: newProduct });
+        } catch (error) {
+            res.status(500).json({ status: 'error', message: 'No se pudo crear el producto', error: error.message });
         }
     }
 
@@ -55,7 +66,9 @@ class ActionsMongo {
             res.json({ status: 500, err: err.message });
         }
     }
-
+    static async getUserByEmail(email) {
+        return UserManager.getUserByEmail(email)
+    }
     static async loginUser(req, res) {
         const { email, password } = req.body;
         try {
@@ -120,11 +133,10 @@ class ActionsMongo {
     static async authenticateGithub(req, res, next) {
         passport.authenticate("github")(req, res, next);
     }
-
     static async githubCallback(req, res, next) {
         passport.authenticate("github", async (err, user) => {
             if (err) {
-                // Manejar el error aquí
+                console.error("Error en autenticación de GitHub:", err);
                 return res.status(500).json({ status: "error", message: "Error en autenticación de GitHub" });
             }
 
@@ -134,14 +146,40 @@ class ActionsMongo {
     }
 
     static async getCurrentUser(req, res) {
-        if (req.isAuthenticated()) {
-            const currentUser = req.user;
+        if (req.session.user) {
+            const currentUser = req.session.user;
+            console.log(currentUser)
             res.status(200).json({ status: "success", user: currentUser });
         } else {
             res.status(401).json({ status: "error", message: "Usuario no autenticado" });
         }
     }
+    static async finishPurchase() {
+        try {
+            const cartId = req.params.cid;
+            const cart = await CartManager.getOneCart(cartId);
+
+            if (!cart) {
+                return res.status(404).json({ status: 'error', message: 'Carrito no encontrado' });
+            }
+
+            const { purchasedProducts, notPurchasedProducts } = await CartManager.purchaseCart(cart);
+
+            if (purchasedProducts.length > 0) {
+                const ticketData = {
+                    userId: req.session.user._id,
+                    products: purchasedProducts.map(product => product._id),
+                };
+                await TicketService.createTicket(ticketData);
+            }
+
+            res.status(200).json({ status: 'success', purchased: purchasedProducts, notPurchased: notPurchasedProducts });
+        } catch (err) {
+            res.status(500).json({ status: 'error', message: err.message });
+        }
+    };
 }
+
 
 
 

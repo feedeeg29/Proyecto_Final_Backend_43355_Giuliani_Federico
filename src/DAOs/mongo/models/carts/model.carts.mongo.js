@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import productModel from "./model.products.mongo.js";
+import productModel from "../products/model.products.mongo.js";
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 const cartsCollection = "carts";

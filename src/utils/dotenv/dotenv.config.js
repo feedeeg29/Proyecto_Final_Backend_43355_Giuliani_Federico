@@ -10,7 +10,7 @@ export const persistence = process.env.PERSISTENCE
 
 export const secret = process.env.SECRET;
 
-export const clientID = process.env.CLIENT_ID;
+export const clientGitID = process.env.CLIENT_ID;
 
 export const clientSecret = process.env.CLIENT_SECRET;
 

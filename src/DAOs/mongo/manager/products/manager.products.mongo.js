@@ -1,4 +1,4 @@
-import productModel from "../../mongo/models/model.products.mongo.js";
+import productModel from "../../models/products/model.products.mongo.js";
 
 
 class productManager {
@@ -28,9 +28,9 @@ class productManager {
             throw new Error(err);
         }
     }
-    static createProduct = async (product) => {
+    static createProduct = async (productData) => {
         try {
-            const newProduct = new productModel(product);
+            const newProduct = new productModel(productData); // Usar productData en lugar de product
             return await newProduct.save();
         } catch (err) {
             throw new Error(err);

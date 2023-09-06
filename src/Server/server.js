@@ -23,14 +23,19 @@ const app = express()
 
 //middleware
 app.use(express.static('public'));
+
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
+
 app.use(cookieParser())
+
 connectToDatabase()
+
 app.use(session({
   store: new MongoStore({
     mongoUrl: URI,
-    ttl: 7200,
+    ttl: 720000,
   }),
   secret: secret,
   resave: false,

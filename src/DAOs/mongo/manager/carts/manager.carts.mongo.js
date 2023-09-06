@@ -1,4 +1,4 @@
-import cartModel from "../models/model.carts.mongo.js";
+import cartModel from "../../models/carts/model.carts.mongo.js";
 
 
 class cartManager {
@@ -103,6 +103,38 @@ class cartManager {
             throw new Error(err);
         }
     }
+
+    static async purchaseCart(cart) {
+        const productsToPurchase = [];
+        const productsToRemove = [];
+
+        for (const item of cart.items) {
+            const product = await ProductManager.getOne(item.productId);
+
+            if (!product) {
+                productsToRemove.push(item.productId);
+                continue;
+            }
+
+            if (product.stock >= item.quantity) {
+                productsToPurchase.push({ product, quantity: item.quantity });
+            } else {
+                productsToRemove.push(item.productId);
+            }
+        }
+
+        for (const productInfo of productsToPurchase) {
+            const { product, quantity } = productInfo;
+            product.stock -= quantity;
+            await product.save();
+        }
+
+        // Limpiar el carrito
+        await this.clearCart(cart._id);
+
+        return { purchasedProducts: productsToPurchase.map(productInfo => productInfo.product), notPurchasedProducts: productsToRemove };
+    }
 }
+
 export default cartManager
 

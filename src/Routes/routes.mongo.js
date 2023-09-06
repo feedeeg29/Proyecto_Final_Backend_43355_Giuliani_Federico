@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import ActionsMongo from '../Controllers/controller.mongo.js'
+import { generateProduct } from '../utils/Mock/mock.products.js';
 
 
 const mnrouter = Router();
@@ -7,11 +8,11 @@ const mnrouter = Router();
 
 
 //Endpoint para traer todos los productos 
+//Endpoint para traer todos los productos 
 mnrouter.get('/all', async (req, res) => {
     try {
         const products = await ActionsMongo.getAll(req, res, req.query)
-        console.log(products)
-        res.json({ status: 200, data: products })
+        res.status(200).json({ status: 200, data: products })
     }
     catch (err) {
         res.json({ status: 500, err: err.message })
@@ -60,6 +61,22 @@ mnrouter.delete("/:id", async (req, res) => {
     await ActionsMongo.deleteProduct(id)
     res.send(204)
 })
+
+mnrouter.get("/", (req, res) => {
+    try {
+        const products = [];
+        for (let i = 0; i < 100; i++) {
+            products.push(generateProduct());
+        }
+        // Después de generar los productos, puedes enviarlos como respuesta JSON.
+        console.log(products)
+        res.send({ status: 200 })
+    } catch (error) {
+        // Si ocurre un error al generar los productos, puedes manejarlo aquí.
+        console.error("Error al generar productos:", error);
+        res.status(500).json({ status: 500, err: "Error al generar productos" });
+    }
+});
 
 
 

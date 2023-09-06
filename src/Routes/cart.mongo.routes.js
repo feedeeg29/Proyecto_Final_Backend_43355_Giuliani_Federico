@@ -83,6 +83,13 @@ cartMongoRoutes.delete('/:id/product/:productId', async (req, res) => {
         res.json({ status: 500, err: err.message })
     }
 })
+cartMongoRoutes.post('/:cid/purchase', async (req, res) => {
+    try {
+        return ActionsMongo.finishPurchase()
+    } catch (error) {
+
+    }
+});
 
 //export del modulo
 export default cartMongoRoutes

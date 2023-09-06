@@ -10,6 +10,7 @@
     "start:local": "NODE_ENV=local nodemon src/Server/server.js"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "connect-mongo": "^5.0.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",

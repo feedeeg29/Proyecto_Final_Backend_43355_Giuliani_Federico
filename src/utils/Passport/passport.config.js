@@ -1,23 +1,25 @@
 import passport from "passport";
-// import local from "passport-local";
+import { clientGitID, clientSecret, clientGitURL } from '../dotenv/dotenv.config.js'
 import GitHubStrategy from "passport-github2";
-import userManager from "../../DAOs/mongo/manager/manager.user.mongo.js";
 import { createHash, isValidPassword } from "../utils.js";
+import ActionsMongo from "../../Controllers/controller.mongo.js";
 
-// const localStrategy = local.Strategy;
+
+
+
 
 const initializePassport = () => {
     passport.use(
         "github",
         new GitHubStrategy(
             {
-                clientID: "Iv1.76be997dfddc2044",
-                clientSecret: "e3e799a63d667fcf454dac914cc0a9bc7fb48d74",
-                callbackURL: "http://localhost:8080/mongouser/githubcallback",
+                clientID: clientGitID,
+                clientSecret: clientSecret,
+                callbackURL: clientGitURL,
             },
             async (accessToken, refreshToken, profile, done) => {
                 try {
-                    const user = await userManager.getUserByEmail(profile._json.email);
+                    const user = await ActionsMongo.getUserByEmail(profile._json.email);
                     console.log(profile)
                     if (user) { console.log(user) } else { console.log("no hay usuario") }
                     if (!user) {
@@ -27,7 +29,7 @@ const initializePassport = () => {
                             email: profile._json.email,
                             password: createHash(password)
                         };
-                        const result = await userManager.createUser(newUser);
+                        const result = await ActionsMongo.createUser(newUser);
                         return done(null, result);
                     } else {
                         return done(null, user);
@@ -44,7 +46,7 @@ const initializePassport = () => {
     });
 
     passport.deserializeUser(async (id, done) => {
-        const user = await userManager.getUserById(id);
+        const user = await ActionsMongo.getUserById(id);
         done(null, user);
     });
 };

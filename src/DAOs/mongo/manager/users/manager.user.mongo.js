@@ -1,4 +1,4 @@
-import userModel from '../models/model.users.js';
+import userModel from '../../models/users/model.users.js';
 
 class UserManager {
     static async getUsers() {
